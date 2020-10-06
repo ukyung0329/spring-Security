@@ -143,9 +143,47 @@
         <artifactId>spring-security-taglibs</artifactId>
         <version>5.2.2.RELEASE</version>
     </dependency>
+    
+    <!-- 마이 바티스 스프링 사용시 -->
+  	<dependency>
+	    <groupId>org.mybatis</groupId>
+	    <artifactId>mybatis-spring</artifactId>
+	    <version>2.0.3</version>
+	</dependency>
+	
+  	<dependency>
+	    <groupId>org.mybatis</groupId>
+	    <artifactId>mybatis</artifactId>
+	    <version>3.5.3</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>commons-dbcp</groupId>
+	    <artifactId>commons-dbcp</artifactId>
+	    <version>1.4</version>
+	</dependency>
+    
+    
+    
+    <!-- oracle -->
+	<dependency>
+	    <groupId>com.oracle.database.jdbc</groupId>
+	    <artifactId>ojdbc6</artifactId>
+	    <version>11.2.0.4</version>
+	</dependency>
+	
+	
+    
   
   </dependencies>
   
+  
+  <repositories>
+  	<repository>
+		<id>codelds</id>		<!-- ojdbc6 와 함께 추가 -->
+		<url>https://code.lds.org/nexus/content/groups/main-repo</url>
+	</repository>
+</repositories>
   
 </project>
 
