@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:security="http://www.springframework.org/schema/security"
+   xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.2.xsd
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+   
+   <!-- 접근시에 로그인이 안되어 있을 경우 로그인페이지로 (강제) 인증을 하기 위해 이동 시키는 부분 -->
+<!--    <security:http auto-config="true" use-expressions="false">
+      <security:intercept-url pattern="/**" access="ROLE_USER"/> /** 어느 경로라던지
+   </security:http> -->
+
+	<security:http auto-config="true" use-expressions="true">
+      <!--  순서, hasRole에 주의  -->
+      <security:intercept-url pattern="/user/**" access="hasAnyRole('ROLE_USER', 'ROLE_MEMBER', 'ROLE_ADMIN')"/><!-- 여러가지 함수를 셋팅 가능함 hsaAnyRole  -->
+      <security:intercept-url pattern="/member/**" access="hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')"/><!-- member만 접근가능   -->
+      <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/><!-- admin만 접근 가능  -->
+	  <security:intercept-url pattern="/**" access="permitAll"/> <!-- /** 어느 경로라던지 -->
+	  
+	  <!-- 사용자 지정 로그인뷰  -->
+       <security:form-login
+      		username-parameter="loginId"
+      		password-parameter="loginPwd"
+      		login-page="/secu/loginPage"
+      		default-target-url="/"/>
+      		
+      <!-- 접근 권한에 따른 메세지 -->
+      <security:access-denied-handler error-page="/access_denied_page"/>
+      
+   </security:http>
+
+   <!-- db 접근 전 service가 필요한데 service 접근 전에 로그인 정보의 차등을 셋팅하는 부분 -->
+   <security:authentication-manager>
+      <security:authentication-provider>
+         <security:user-service> <!-- 나중에 이 부분을 db로 바꿔야 한다 -->
+<!--             <security:user name="guest" password="{noop}guest" authorities="ROLE_GUEST"/>
+            <security:user name="user" password="{noop}userPw" authorities="ROLE_USER"/> -->
+            
+            <security:user name="user" password="{noop}userPw" authorities="ROLE_USER"/>
+            <security:user name="member" password="{noop}memPw" authorities="ROLE_MEMBER"/>
+            <security:user name="admin" password="{noop}admin" authorities="ROLE_ADMIN"/>
+      
+            
+            <!-- DB로 접근  -->
+         </security:user-service>
+      </security:authentication-provider>
+   </security:authentication-manager>
+
+</beans>
